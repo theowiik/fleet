@@ -25,7 +25,7 @@ cd /opt/media-server
 
 # Copy all these files here:
 # - docker-compose.yml
-# - manage.py  
+# - manage.py
 # - verify-vpn.sh
 # - .env.example
 ```
@@ -96,6 +96,7 @@ Wait for containers to start.
 ```
 
 Should show:
+
 - ✓ Connected via Mullvad VPN
 - ✓ All tests passed
 - ✓ No leaks detected
@@ -103,9 +104,10 @@ Should show:
 ## 7. Access Services
 
 Open in browser:
+
 ```
 http://YOUR_IP:8096   - Jellyfin (setup wizard)
-http://YOUR_IP:5055   - Jellyseerr  
+http://YOUR_IP:5055   - Jellyseerr
 http://YOUR_IP:7878   - Radarr
 http://YOUR_IP:8989   - Sonarr
 http://YOUR_IP:9696   - Prowlarr

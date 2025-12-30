@@ -3,6 +3,7 @@
 ## What You're Getting
 
 A **production-ready, .env-based media server stack** with:
+
 - ✅ All configuration in `.env` file
 - ✅ Python validation script with safety checks
 - ✅ VPN kill switch with zero-leak guarantee (Mullvad)
@@ -14,21 +15,25 @@ A **production-ready, .env-based media server stack** with:
 ## Files Included
 
 ### Core Configuration
+
 - **`docker-compose.yml`** - Complete stack definition (all values from .env)
 - **`.env.example`** - Template with all configurable options
 - **`manage.py`** - Python management script with validation
 
 ### Documentation
+
 - **`README.md`** - Comprehensive guide (setup, usage, troubleshooting)
 - **`QUICKSTART.md`** - 5-minute setup for experienced users
 - **`MULLVAD_SETUP.md`** - Step-by-step Mullvad configuration guide
 
 ### Tools
+
 - **`verify-vpn.sh`** - VPN leak detection script (run anytime)
 
 ## What's Special About This Setup
 
 ### 1. Everything in .env
+
 **NO editing docker-compose.yml when migrating!**
 
 ```bash
@@ -39,7 +44,9 @@ CONFIG_ROOT=/new/path
 ```
 
 ### 2. Validation Before Start
+
 The Python script checks EVERYTHING:
+
 - ✅ All required variables set
 - ✅ Mullvad config format valid
 - ✅ Directories exist and writable
@@ -48,6 +55,7 @@ The Python script checks EVERYTHING:
 - ✅ Network subnet valid
 
 ### 3. VPN Protection Guaranteed
+
 ```
 qBittorrent uses: network_mode: "service:gluetun"
                           ↓
@@ -59,6 +67,7 @@ qBittorrent uses: network_mode: "service:gluetun"
 ```
 
 ### 4. Simple Management
+
 ```bash
 ./manage.py validate   # Check config
 ./manage.py start      # Start everything
@@ -124,11 +133,13 @@ qBittorrent uses: network_mode: "service:gluetun"
 ## Security Model
 
 ### What's Protected
+
 ✅ **qBittorrent traffic**: 100% through VPN, kill switch enforced
 ✅ **Downloads**: Isolated from internet access
 ✅ **Admin interfaces**: Only accessible on local network
 
 ### What's NOT Protected (Yet)
+
 ❌ **No remote access** - local network only
 ❌ **No HTTPS** - plain HTTP on LAN
 ❌ **No authentication layer** - services unprotected on LAN
@@ -139,18 +150,23 @@ qBittorrent uses: network_mode: "service:gluetun"
 ## Migration Path
 
 ### Phase 1: Local Setup (You Are Here)
+
 - Laptop or NUC on local network
 - Local storage or external drive
 - Family accesses on same WiFi
 
 ### Phase 2: Remote Access (Future)
+
 Add to this stack:
+
 - Tailscale for secure remote access
 - Caddy for HTTPS reverse proxy
 - Let's Encrypt SSL certificates
 
 ### Phase 3: Production Hardening (Future)
+
 Add to this stack:
+
 - Authelia for 2FA authentication
 - Fail2ban for brute force protection
 - UFW firewall rules
@@ -161,12 +177,14 @@ Add to this stack:
 ## Quick Start Path
 
 ### For Experienced Users (5 minutes)
+
 1. Copy files to `/opt/media-server`
 2. Edit `.env` (see QUICKSTART.md)
 3. Run `./manage.py start`
 4. Run `./verify-vpn.sh`
 
 ### For Everyone Else (30 minutes)
+
 1. Read `README.md` completely
 2. Follow `MULLVAD_SETUP.md` for VPN credentials
 3. Follow "Initial Setup" section in README
@@ -175,14 +193,17 @@ Add to this stack:
 ## Cost Breakdown
 
 **Required:**
+
 - Mullvad VPN: €5/month (~$5.50 USD)
 - Hardware: Use existing laptop/PC/NUC
 
 **Optional:**
+
 - Domain name: $10-15/year (only if adding remote access)
 - NAS storage: $200-500 one-time (optional, not required)
 
 **Compare to streaming services:**
+
 - Netflix + Disney+ + HBO Max = $42.47/month
 - This setup = $5.50/month
 
@@ -225,24 +246,28 @@ Add to this stack:
 ## Important Notes
 
 ### VPN Protection
+
 - qBittorrent CANNOT bypass VPN due to Docker networking
 - Kill switch is at kernel level (iptables)
 - Run `./verify-vpn.sh` anytime to verify
 - Even if Gluetun crashes, qBittorrent loses ALL network
 
 ### Storage Management
+
 - Use hardlinks to save 50% space
 - Single `/data` root enables this
 - Monitor disk usage regularly
 - Consider NAS when storage fills
 
 ### Family Access
+
 - Give them Jellyfin URL only
 - Give them Jellyseerr URL to request content
 - Do NOT give them admin interface URLs
 - Everything else happens automatically
 
 ### Performance
+
 - 4GB RAM minimum for Jellyfin
 - 8GB+ recommended for large libraries
 - Intel QuickSync handles 4-5 simultaneous transcodes
@@ -274,6 +299,7 @@ Add to this stack:
 ## Support Resources
 
 ### Included Documentation
+
 - `README.md` - Complete guide
 - `QUICKSTART.md` - Fast setup
 - `MULLVAD_SETUP.md` - VPN credentials
@@ -281,11 +307,13 @@ Add to this stack:
 - Comments in `docker-compose.yml` - Architecture explained
 
 ### Built-in Tools
+
 - `manage.py validate` - Check configuration
 - `manage.py logs` - Debug issues
 - `verify-vpn.sh` - Test VPN protection
 
 ### External Resources
+
 - Jellyfin docs: https://jellyfin.org/docs/
 - Radarr docs: https://wiki.servarr.com/radarr
 - Sonarr docs: https://wiki.servarr.com/sonarr
@@ -310,11 +338,13 @@ For verification, here are the file sizes:
 ## License & Responsibility
 
 This stack uses:
-- Open source software (Jellyfin, *arr stack)
+
+- Open source software (Jellyfin, \*arr stack)
 - Docker (commercially supported)
 - Your own Mullvad subscription
 
 **You are responsible for:**
+
 - Legal use of indexers/content
 - Keeping software updated
 - Securing your network

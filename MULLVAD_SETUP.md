@@ -35,18 +35,21 @@ Endpoint = se10-wireguard.mullvad.net:51820
 ### Copy these values to your .env:
 
 **WIREGUARD_PRIVATE_KEY**
+
 ```bash
 # From [Interface] → PrivateKey
 WIREGUARD_PRIVATE_KEY=ABCDefghIJKLmnopQRSTuvwxYZ1234567890abcd=
 ```
 
 **WIREGUARD_ADDRESSES**
+
 ```bash
 # From [Interface] → Address
 WIREGUARD_ADDRESSES=10.68.123.45/32
 ```
 
 **VPN_SERVER_CITIES** (optional)
+
 ```bash
 # From [Peer] → Endpoint (the "se10" part indicates Sweden)
 # se = Sweden, nl = Netherlands, us = United States, etc.
@@ -83,16 +86,19 @@ docker exec qbittorrent curl -s https://am.i.mullvad.net/json | jq
 ## Troubleshooting
 
 ### "Invalid private key"
+
 - Make sure you copied the ENTIRE key including the trailing `=`
 - Private keys are always exactly 44 characters
 - No spaces before or after
 
 ### "Connection timeout"
+
 - Check your Mullvad account has active time
 - Try different SERVER_CITIES value
 - Try leaving SERVER_CITIES empty (random server)
 
 ### "Authentication failed"
+
 - Regenerate a new key in Mullvad account
 - Make sure you have an active subscription
 - Wait 30 seconds after generating key
@@ -100,6 +106,7 @@ docker exec qbittorrent curl -s https://am.i.mullvad.net/json | jq
 ## Server Locations
 
 Common VPN_SERVER_CITIES values:
+
 - **Europe**: Stockholm, Amsterdam, London, Paris, Frankfurt, Zurich
 - **North America**: New York, Los Angeles, Toronto, Dallas
 - **Asia**: Tokyo, Singapore, Hong Kong
@@ -117,6 +124,7 @@ Leave empty for automatic selection based on lowest latency.
 ## Multiple Devices
 
 You can generate **up to 5 WireGuard keys** per Mullvad account. Use different keys for:
+
 - This media server
 - Your phone
 - Your laptop

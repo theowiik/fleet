@@ -24,7 +24,7 @@ Prowlarr finds torrent
          ↓
 qBittorrent downloads ──→ ALL TRAFFIC THROUGH VPN
          ↓                 (Gluetun + Mullvad)
-Radarr/Sonarr organize    
+Radarr/Sonarr organize
          ↓
 Jellyfin streams to family
 ```
@@ -34,9 +34,11 @@ Jellyfin streams to family
 ## Prerequisites
 
 ### 1. Ubuntu Server installed
+
 Any recent Ubuntu Server (20.04+, 22.04, 24.04)
 
 ### 2. Docker installed
+
 ```bash
 curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
@@ -44,18 +46,22 @@ sudo usermod -aG docker $USER
 ```
 
 ### 3. Mullvad account
+
 - Sign up: https://mullvad.net/
 - Cost: ~€5/month
 - Generate WireGuard config: https://mullvad.net/en/account/wireguard-config
 
 ### 4. Storage setup
+
 You need two directories:
+
 - **DATA_ROOT**: Your media files (movies, TV, torrents) - can be external drive
 - **CONFIG_ROOT**: Application configs and databases - should be fast (SSD)
 
 ## Quick Start
 
 ### Step 1: Download this stack
+
 ```bash
 # Clone or download these files to your server
 cd /opt
@@ -70,6 +76,7 @@ cd media-server
 ```
 
 ### Step 2: Create your .env file
+
 ```bash
 cp .env.example .env
 nano .env
@@ -97,11 +104,13 @@ VPN_SERVER_CITIES=Stockholm       # Or your preferred location
 ```
 
 ### Step 3: Validate configuration
+
 ```bash
 ./manage.py validate
 ```
 
 This checks:
+
 - All required variables are set
 - Mullvad config is valid format
 - Directories exist and are writable
@@ -111,11 +120,13 @@ This checks:
 Fix any errors before proceeding.
 
 ### Step 4: Start the stack
+
 ```bash
 ./manage.py start
 ```
 
 This will:
+
 1. Re-run validation
 2. Pull all Docker images
 3. Start all containers
@@ -126,18 +137,23 @@ This will:
 **CRITICAL**: Always verify torrents go through VPN!
 
 ### Test 1: Check qBittorrent IP
+
 ```bash
 docker exec qbittorrent curl -s ifconfig.me
 ```
+
 **Expected**: Shows Mullvad IP (NOT your home IP)
 
 ### Test 2: Mullvad connection check
+
 ```bash
 docker exec qbittorrent curl -s https://am.i.mullvad.net/json | jq
 ```
+
 **Expected**: `"mullvad_exit_ip": true`
 
 ### Test 3: Kill switch test
+
 ```bash
 # Stop VPN
 docker stop gluetun
@@ -145,6 +161,7 @@ docker stop gluetun
 # Try to reach internet from qBittorrent
 docker exec qbittorrent curl -s --max-time 5 ifconfig.me
 ```
+
 **Expected**: TIMEOUT (no connection = kill switch works)
 
 ```bash
@@ -153,6 +170,7 @@ docker start gluetun
 ```
 
 ### Test 4: Torrent IP check
+
 1. Visit: https://torguard.net/checkmytorrentipaddress.php
 2. Copy the magnet link
 3. Add to qBittorrent
@@ -164,6 +182,7 @@ docker start gluetun
 After starting, configure each service:
 
 ### 1. Jellyfin (http://YOUR_IP:8096)
+
 - Complete setup wizard
 - Create admin account
 - Add libraries:
@@ -176,12 +195,14 @@ After starting, configure each service:
   - Enable VPP tone mapping
 
 ### 2. Prowlarr (http://YOUR_IP:9696)
+
 - Add indexers (torrent sites)
 - Common ones: 1337x, RARBG alternatives, YTS
 - Settings → Apps → Add Radarr and Sonarr
 - This syncs indexers automatically
 
 ### 3. Radarr (http://YOUR_IP:7878)
+
 - Settings → Media Management:
   - Root Folder: `/data/media/movies`
   - Enable "Use Hardlinks"
@@ -196,11 +217,13 @@ After starting, configure each service:
   - API Key: (from Jellyfin Dashboard → API Keys)
 
 ### 4. Sonarr (http://YOUR_IP:8989)
+
 - Same setup as Radarr but:
   - Root Folder: `/data/media/tv`
   - qBittorrent Category: `sonarr`
 
 ### 5. qBittorrent (http://YOUR_IP:8080)
+
 - Default login: `admin` / `adminadmin`
 - **Change password immediately!**
 - Settings → Downloads:
@@ -210,6 +233,7 @@ After starting, configure each service:
   - Add `sonarr`: `/data/torrents/tv`
 
 ### 6. Jellyseerr (http://YOUR_IP:5055)
+
 - Use Jellyfin account to login
 - Connect to Jellyfin: `http://jellyfin:8096`
 - Add Radarr: `http://radarr:7878`
@@ -217,6 +241,7 @@ After starting, configure each service:
 - Enable notifications (email/Discord/etc)
 
 ### 7. Bazarr (http://YOUR_IP:6767)
+
 - Languages → Add your languages
 - Providers → Add subtitle providers
 - Sonarr → Add Sonarr instance
@@ -252,6 +277,7 @@ CONFIG_ROOT/
 ```
 
 **Why this structure?**
+
 - Single root (`/data`) enables **hardlinks**
 - Hardlinks save 50% disk space (file appears in two places, stored once)
 - Radarr/Sonarr do instant moves instead of slow copies
@@ -291,6 +317,7 @@ CONFIG_ROOT/
 When moving from laptop to NUC:
 
 ### Option A: Move external drive
+
 ```bash
 # On laptop
 ./manage.py stop
@@ -305,6 +332,7 @@ When moving from laptop to NUC:
 ```
 
 ### Option B: Network transfer
+
 ```bash
 # On laptop
 ./manage.py stop
@@ -320,6 +348,7 @@ Your .env file makes this easy - just change paths if needed.
 ## Troubleshooting
 
 ### qBittorrent not accessible
+
 ```bash
 # Check if Gluetun is healthy
 docker ps
@@ -330,6 +359,7 @@ docker ps
 ```
 
 ### VPN not connecting
+
 ```bash
 # Check Mullvad credentials
 ./manage.py logs gluetun | grep -i error
@@ -341,6 +371,7 @@ docker ps
 ```
 
 ### Jellyfin won't transcode
+
 ```bash
 # Check GPU devices exist
 ls -la /dev/dri/
@@ -352,6 +383,7 @@ getent group render
 ```
 
 ### Downloads not appearing in Jellyfin
+
 ```bash
 # Check Radarr/Sonarr logs
 ./manage.py logs radarr
@@ -362,6 +394,7 @@ getent group render
 ```
 
 ### Containers keep restarting
+
 ```bash
 # Check for permission issues
 ls -la /data
@@ -400,6 +433,7 @@ Replace `YOUR_IP` with your server's local IP (run `hostname -I`).
 ## What's NOT Included (Yet)
 
 This setup is **local network only**. Not included:
+
 - Remote access (Tailscale/VPN)
 - Reverse proxy (Caddy/Nginx)
 - HTTPS/SSL certificates
@@ -414,8 +448,9 @@ Add these later when needed for family remote access.
 - **Everything else**: FREE
 
 Compare to:
+
 - Netflix: $15.49/month
-- Disney+: $10.99/month  
+- Disney+: $10.99/month
 - HBO Max: $15.99/month
 - **Total**: $42.47/month vs $5.50/month
 
@@ -430,6 +465,7 @@ Compare to:
 ## Support
 
 Run into issues?
+
 ```bash
 # Full system check
 ./manage.py validate
