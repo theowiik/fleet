@@ -15,7 +15,6 @@ WIREGUARD_PRIVATE_KEY=CHANGE_ME
 WIREGUARD_ADDRESSES=CHANGE_ME
 
 # Optional
-# VPN_CITY=
 # DATA_PATH=./data
 # CONFIG_PATH=./config
 """
@@ -215,49 +214,43 @@ def cmd_status():
 
     # Display status
     all_running = True
-    print("Services:")
-    print("─" * 60)
-
+    print()
     for svc_id, svc_info in services.items():
         if svc_id in containers:
             state = containers[svc_id]["state"]
             health = containers[svc_id]["health"]
-            status_text = containers[svc_id]["status"]
 
             # Determine icon and status based on state and health
             if state == "running":
                 if health == "unhealthy":
-                    icon = "⚠"
-                    status_display = "running (unhealthy)"
+                    icon = "!"
+                    status_display = "unhealthy"
                     all_running = False
                 elif health == "starting":
-                    icon = "⋯"
-                    status_display = "running (starting)"
+                    icon = "~"
+                    status_display = "starting"
                 elif health == "healthy":
-                    icon = "✓"
+                    icon = "+"
                     status_display = "running"
                 else:
-                    icon = "✓"
+                    icon = "+"
                     status_display = "running"
             else:
-                icon = "✗"
-                status_display = f"{state}"
+                icon = "x"
+                status_display = state
                 all_running = False
 
             # Format service line
-            name = f"{svc_info['name']:<12}"
-            status = f"{icon} {status_display:<22}"
-
             if svc_info["port"]:
                 url = f"http://{ip}:{svc_info['port']}"
-                print(f"{name} {status} {url}")
+                print(f"  [{icon}] {svc_info['name']:<12} {status_display:<12} {url}")
             else:
-                print(f"{name} {status}")
+                print(f"  [{icon}] {svc_info['name']:<12} {status_display}")
         else:
-            print(f"{svc_info['name']:<12} ✗ not found")
+            print(f"  [x] {svc_info['name']:<12} not found")
             all_running = False
 
-    print("─" * 60)
+    print()
 
     # VPN diagnostics
     if "gluetun" in containers and containers["gluetun"]["state"] == "running":
@@ -444,16 +437,21 @@ def show_urls():
     except:
         pass
 
-    print(f"""┌────────────────────────────────────────────┐
-│  Jellyfin     http://{ip}:8096        │
-│  Jellyseerr   http://{ip}:5055        │
-│  Radarr       http://{ip}:7878        │
-│  Sonarr       http://{ip}:8989        │
-│  Prowlarr     http://{ip}:9696        │
-│  qBittorrent  http://{ip}:8080        │
-└────────────────────────────────────────────┘
-qBittorrent login: admin / adminadmin (change it!)
-""")
+    services = [
+        ("Jellyfin", 8096),
+        ("Jellyseerr", 5055),
+        ("Radarr", 7878),
+        ("Sonarr", 8989),
+        ("Prowlarr", 9696),
+        ("qBittorrent", 8080),
+    ]
+
+    print()
+    for name, port in services:
+        print(f"  {name:<12}  http://{ip}:{port}")
+    print()
+    print("qBittorrent login: admin / adminadmin (change it!)")
+    print()
 
 
 def show_help():

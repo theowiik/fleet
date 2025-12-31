@@ -17,8 +17,12 @@ services:
       VPN_TYPE: wireguard
       WIREGUARD_PRIVATE_KEY: ${WIREGUARD_PRIVATE_KEY}
       WIREGUARD_ADDRESSES: ${WIREGUARD_ADDRESSES}
-      SERVER_CITIES: ${VPN_CITY:-}
       TZ: ${TZ:-UTC}
+      VPN_INTERFACE: wg0
+      FIREWALL: "on"
+      FIREWALL_VPN_INPUT_PORTS: 6881
+      DOT: "on"
+      BLOCK_MALICIOUS: "on"
     healthcheck:
       test: [CMD, wget, -qO-, --timeout=5, "https://am.i.mullvad.net/connected"]
       interval: 60s
