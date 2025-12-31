@@ -450,7 +450,7 @@ def show_urls():
     for name, port in services:
         print(f"  {name:<12}  http://{ip}:{port}")
     print()
-    print("qBittorrent login: admin / adminadmin (change it!)")
+    print("qBittorrent: run 'python manage.py logs qbittorrent' for temp password")
     print()
 
 

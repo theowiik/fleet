@@ -4,8 +4,14 @@ Self-hosted media server with VPN-protected downloads.
 
 - [Setup](#setup)
 - [Get Your VPN Keys](#get-your-vpn-keys)
-- [First-Time Service Setup](#first-time-service-setup)
 - [Services](#services)
+- [First-Time Service Setup](#first-time-service-setup)
+  - [1. qBittorrent (:8080)](#1-qbittorrent-8080)
+  - [2. Prowlarr (:9696)](#2-prowlarr-9696)
+  - [3. Radarr (:7878) \& Sonarr (:8989)](#3-radarr-7878--sonarr-8989)
+  - [4. Jellyfin (:8096)](#4-jellyfin-8096)
+  - [5. Jellyseerr (:5055)](#5-jellyseerr-5055)
+  - [6. Bazarr (:6767) — Optional](#6-bazarr-6767--optional)
 
 ## Setup
 
@@ -41,28 +47,71 @@ PrivateKey = abc123...   ← WIREGUARD_PRIVATE_KEY
 Address = 10.x.x.x/32    ← WIREGUARD_ADDRESSES
 ```
 
-## First-Time Service Setup
-
-After starting, configure each service:
-
-**Prowlarr** → Add indexers, then connect to Radarr/Sonarr
-
-**Radarr/Sonarr** → Add qBittorrent as download client:
-
-- Host: `fleet-gluetun`
-- Port: `8080`
-
-**Jellyfin** → Add libraries from `/media/movies` and `/media/tv`
-
 ## Services
 
-| Service     | URL   | Purpose                   |
+| Service     | Port  | Purpose                   |
 | ----------- | ----- | ------------------------- |
 | Jellyfin    | :8096 | Watch your media          |
 | Jellyseerr  | :5055 | Request movies/shows      |
 | Radarr      | :7878 | Movie automation          |
 | Sonarr      | :8989 | TV automation             |
 | Prowlarr    | :9696 | Indexer management        |
+| Bazarr      | :6767 | Subtitle automation       |
 | qBittorrent | :8080 | Downloads (VPN protected) |
 
-**qBittorrent default login:** admin / adminadmin (change this!)
+## First-Time Service Setup
+
+Configure in this order (takes ~10 minutes):
+
+### 1. qBittorrent (:8080)
+
+Get your temporary password from the logs:
+
+```bash
+python manage.py logs qbittorrent
+# Look for: "A temporary password is provided for this session: xxxxxxxx"
+```
+
+Login with `admin` + that password, then:
+
+- **Settings → Web UI → Authentication:** Set a permanent password
+- **Settings → Downloads → Default Save Path:** `/data/torrents`
+
+### 2. Prowlarr (:9696)
+
+- **Settings → General:** Note your API Key (needed for next steps)
+- **Indexers → Add:** Add your torrent indexers (1337x, RARBG, etc.)
+- **Settings → Apps → Add:** Connect to Radarr and Sonarr:
+  - Prowlarr Server: `http://fleet-prowlarr:9696`
+  - Radarr/Sonarr Server: `http://fleet-radarr:7878` or `http://fleet-sonarr:8989`
+  - API Key: Get from each app's Settings → General
+
+### 3. Radarr (:7878) & Sonarr (:8989)
+
+Both need the same setup:
+
+- **Settings → Media Management → Root Folder:**
+  - Radarr: `/data/media/movies`
+  - Sonarr: `/data/media/tv`
+- **Settings → Download Clients → Add qBittorrent:**
+  - Host: `fleet-gluetun`
+  - Port: `8080`
+  - Username: `admin`
+  - Password: (your qBittorrent password)
+
+### 4. Jellyfin (:8096)
+
+- Run through initial wizard
+- **Add Media Library:**
+  - Movies → `/media/movies`
+  - Shows → `/media/tv`
+
+### 5. Jellyseerr (:5055)
+
+- Sign in with Jellyfin
+- Connect to Radarr/Sonarr using their API keys
+- Use internal URLs: `http://fleet-radarr:7878`, `http://fleet-sonarr:8989`
+
+### 6. Bazarr (:6767) — Optional
+
+Automatic subtitles. Connect to Radarr/Sonarr the same way.
