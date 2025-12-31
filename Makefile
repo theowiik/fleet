@@ -1,4 +1,4 @@
-.PHONY: help setup start stop restart logs status validate clean
+.PHONY: help setup start stop restart logs status validate clean reset
 .PHONY: format format-python format-markdown format-docker
 
 # Default target
@@ -14,6 +14,7 @@ help:
 	@echo "  make status     - Check status"
 	@echo "  make validate   - Validate configuration"
 	@echo "  make clean      - Stop and remove containers"
+	@echo "  make reset      - FULL RESET: Remove all configs (media preserved)"
 	@echo ""
 	@echo "Development:"
 	@echo "  make format     - Format all files"
@@ -43,6 +44,26 @@ validate:
 clean:
 	@docker compose down -v
 	@echo "Containers and volumes removed (data preserved)"
+
+reset:
+	@echo "⚠️  WARNING: This will DELETE ALL service configurations!"
+	@echo "   - All accounts, settings, and configs will be removed"
+	@echo "   - Media files in $${DATA_ROOT}/media will be preserved"
+	@echo "   - You will need to run 'make setup' again after this"
+	@echo ""
+	@read -p "Type 'DELETE' to confirm: " confirm && [ "$$confirm" = "DELETE" ] || (echo "Reset cancelled" && exit 1)
+	@echo "Stopping containers..."
+	@docker compose down
+	@echo "Removing config directories..."
+	@if [ -n "$${CONFIG_ROOT}" ] && [ -d "$${CONFIG_ROOT}" ]; then \
+		rm -rf $${CONFIG_ROOT}/*/; \
+		echo "✓ Configs removed from $${CONFIG_ROOT}"; \
+	else \
+		echo "No config directory found at $${CONFIG_ROOT}"; \
+	fi
+	@echo ""
+	@echo "✓ Reset complete! Media preserved in $${DATA_ROOT}"
+	@echo "Run 'make setup' to reconfigure services"
 
 # Formatting
 format: format-python format-markdown format-docker
