@@ -20,7 +20,7 @@ services:
       SERVER_CITIES: ${VPN_CITY:-}
       TZ: ${TZ:-UTC}
     healthcheck:
-      test: [CMD, wget, -q, --spider, "https://am.i.mullvad.net/connected"]
+      test: [CMD, wget, -qO-, --timeout=5, "https://am.i.mullvad.net/connected"]
       interval: 60s
       timeout: 10s
       retries: 3

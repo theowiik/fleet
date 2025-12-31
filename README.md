@@ -2,6 +2,13 @@
 
 Self-hosted media server with VPN-protected downloads.
 
+- [Setup (3 steps)](#setup-3-steps)
+- [Get Your VPN Keys](#get-your-vpn-keys)
+- [Commands](#commands)
+- [Services](#services)
+- [First-Time Service Setup](#first-time-service-setup)
+- [Requirements](#requirements)
+
 ## Setup (3 steps)
 
 ```bash
@@ -17,8 +24,9 @@ python manage.py start
 ## Get Your VPN Keys
 
 1. Go to https://mullvad.net/en/account/wireguard-config
-2. Generate a key → Download the `.conf` file
-3. Open it and copy these values to your `.env`:
+2. Set these settings: ![Mullvad Wireguard Settings](readme/mullvad_wireguard.png)
+3. Generate a key → Download the `.conf` file
+4. Open it and copy these values to your `.env`:
 
 ```
 [Interface]

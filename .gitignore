@@ -1,4 +1,9 @@
+.ignore/
 .claude/
+
+# Fleet - runtime data (media, torrents, service configs)
+data/
+config/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python
