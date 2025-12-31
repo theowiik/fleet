@@ -12,6 +12,7 @@ Self-hosted media server with VPN-protected downloads.
   - [4. Jellyfin (:8096)](#4-jellyfin-8096)
   - [5. Jellyseerr (:5055)](#5-jellyseerr-5055)
   - [6. Bazarr (:6767) — Optional](#6-bazarr-6767--optional)
+- [Disclaimer](#disclaimer)
 
 ## Setup
 
@@ -115,3 +116,7 @@ Both need the same setup:
 ### 6. Bazarr (:6767) — Optional
 
 Automatic subtitles. Connect to Radarr/Sonarr the same way.
+
+## Disclaimer
+
+For educational purposes only. Use responsibly.
