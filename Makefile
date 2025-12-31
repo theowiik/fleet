@@ -1,12 +1,50 @@
-.PHONY: format format-python format-markdown format-docker format-nix help
+.PHONY: help setup start stop restart logs status validate clean
+.PHONY: format format-python format-markdown format-docker
 
+# Default target
 help:
-	@echo "Available targets:"
-	@echo "  make format          - Format all files (Python, Markdown, Dockerfiles, Nix)"
-	@echo "  make format-python   - Format Python files with ruff"
-	@echo "  make format-markdown - Format Markdown files with prettier"
-	@echo "  make format-docker   - Format Dockerfiles with prettier"
+	@echo "Media Server Stack"
+	@echo ""
+	@echo "Main commands:"
+	@echo "  make setup      - Initial setup (auto-detect config)"
+	@echo "  make start      - Start all services"
+	@echo "  make stop       - Stop all services"
+	@echo "  make restart    - Restart all services"
+	@echo "  make logs       - View logs"
+	@echo "  make status     - Check status"
+	@echo "  make validate   - Validate configuration"
+	@echo "  make clean      - Stop and remove containers"
+	@echo ""
+	@echo "Development:"
+	@echo "  make format     - Format all files"
 
+# Media Server Commands
+setup:
+	@./setup.sh
+
+start:
+	@./start.sh
+
+stop:
+	@docker compose down
+
+restart:
+	@docker compose restart
+
+logs:
+	@docker compose logs -f
+
+status:
+	@docker compose ps
+
+validate:
+	@./manage.py validate
+
+clean:
+	@docker compose down -v
+	@echo "Containers and volumes removed (data preserved)"
+
+# Formatting
 format: format-python format-markdown format-docker
 	@echo "✓ All files formatted!"
 
