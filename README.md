@@ -50,15 +50,16 @@ Address = 10.x.x.x/32    ← WIREGUARD_ADDRESSES
 
 ## Services
 
-| Service     | Port  | Purpose                   |
-| ----------- | ----- | ------------------------- |
-| Jellyfin    | :8096 | Watch your media          |
-| Jellyseerr  | :5055 | Request movies/shows      |
-| Radarr      | :7878 | Movie automation          |
-| Sonarr      | :8989 | TV automation             |
-| Prowlarr    | :9696 | Indexer management        |
-| Bazarr      | :6767 | Subtitle automation       |
-| qBittorrent | :8080 | Downloads (VPN protected) |
+| Service      | Port  | Purpose                           |
+| ------------ | ----- | --------------------------------- |
+| Jellyfin     | :8096 | Watch your media                  |
+| Jellyseerr   | :5055 | Request movies/shows              |
+| Radarr       | :7878 | Movie automation                  |
+| Sonarr       | :8989 | TV automation                     |
+| Prowlarr     | :9696 | Indexer management                |
+| FlareSolverr | :8191 | Cloudflare bypass (VPN protected) |
+| Bazarr       | :6767 | Subtitle automation               |
+| qBittorrent  | :8080 | Downloads (VPN protected)         |
 
 ## First-Time Service Setup
 
@@ -81,7 +82,11 @@ Login with `admin` + that password, then:
 ### 2. Prowlarr (:9696)
 
 - **Settings → General:** Note your API Key (needed for next steps)
+- **Settings → Indexers → Add FlareSolverr:** For Cloudflare-protected indexers:
+  - Tags: `flaresolverr`
+  - Host: `http://fleet-gluetun:8191`
 - **Indexers → Add:** Add your torrent indexers (1337x, RARBG, etc.)
+  - For Cloudflare-protected sites, add tag: `flaresolverr`
 - **Settings → Apps → Add:** Connect to Radarr and Sonarr:
   - Prowlarr Server: `http://fleet-prowlarr:9696`
   - Radarr/Sonarr Server: `http://fleet-radarr:7878` or `http://fleet-sonarr:8989`

@@ -11,6 +11,7 @@ services:
       - 6881:6881
       - 6881:6881/udp
       - 9696:9696
+      - 8191:8191
     volumes:
       - ${CONFIG_PATH:-./config}/gluetun:/gluetun
     environment:
@@ -127,4 +128,16 @@ services:
       - ${DATA_PATH:-./data}/media:/data/media
     ports:
       - 6767:6767
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: fleet-flaresolverr
+    network_mode: service:gluetun
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      LOG_LEVEL: info
+      TZ: ${TZ:-UTC}
     restart: unless-stopped
