@@ -22,7 +22,7 @@ services:
       TZ: ${TZ:-UTC}
       VPN_INTERFACE: wg0
       FIREWALL: "on"
-      FIREWALL_VPN_INPUT_PORTS: 6881
+      FIREWALL_VPN_INPUT_PORTS: 6881,8191
       DOT: "on"
       BLOCK_MALICIOUS: "on"
     healthcheck:
