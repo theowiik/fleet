@@ -141,3 +141,20 @@ services:
       LOG_LEVEL: info
       TZ: ${TZ:-UTC}
     restart: unless-stopped
+
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr
+    container_name: fleet-recyclarr
+    volumes:
+      - ./recyclarr:/config
+    environment:
+      TZ: ${TZ:-UTC}
+
+  decluttarr:
+    image: ghcr.io/manimatter/decluttarr:latest
+    container_name: fleet-decluttarr
+    volumes:
+      - ./decluttarr:/config
+    environment:
+      TZ: ${TZ:-UTC}
+    restart: unless-stopped

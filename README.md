@@ -12,6 +12,8 @@ Self-hosted media server with VPN-protected downloads.
   - [4. Jellyfin (:8096)](#4-jellyfin-8096)
   - [5. Jellyseerr (:5055)](#5-jellyseerr-5055)
   - [6. Bazarr (:6767) — Optional](#6-bazarr-6767--optional)
+  - [7. Recyclarr](#7-recyclarr)
+  - [8. Decluttarr](#8-decluttarr)
 - [Disclaimer](#disclaimer)
 
 ## Setup
@@ -60,6 +62,8 @@ Address = 10.x.x.x/32    ← WIREGUARD_ADDRESSES
 | FlareSolverr | :8191 | Cloudflare bypass (VPN protected) |
 | Bazarr       | :6767 | Subtitle automation               |
 | qBittorrent  | :8080 | Downloads (VPN protected)         |
+| Recyclarr    | —     | Applies recommended quality settings |
+| Decluttarr   | —     | Auto-removes stuck downloads      |
 
 ## First-Time Service Setup
 
@@ -121,6 +125,21 @@ Both need the same setup:
 ### 6. Bazarr (:6767) — Optional
 
 Automatic subtitles. Connect to Radarr/Sonarr the same way.
+
+### 7. Recyclarr
+
+Applies recommended quality profiles from TRaSH Guides.
+
+1. Copy API keys from Radarr/Sonarr (Settings → General) into `.env`
+2. Run `docker compose run --rm recyclarr sync`
+3. In Radarr/Sonarr: Settings → Indexers → set **Minimum Seeders** to `5`
+
+### 8. Decluttarr
+
+Automatically removes stuck/failed downloads. Runs continuously in the background.
+
+1. Check it sees your queues: `python manage.py logs decluttarr`
+2. Once verified, edit `decluttarr/config.yaml` and set `test_run: false`
 
 ## Disclaimer
 

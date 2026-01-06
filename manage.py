@@ -14,6 +14,11 @@ ENV_TEMPLATE = """# Fleet - Edit VPN settings, then: python manage.py start
 WIREGUARD_PRIVATE_KEY=CHANGE_ME
 WIREGUARD_ADDRESSES=CHANGE_ME
 
+# For Recyclarr/Decluttarr (get from Radarr/Sonarr Settings → General)
+# RADARR_API_KEY=
+# SONARR_API_KEY=
+# QBITTORRENT_PASSWORD=
+
 # Optional
 # DATA_PATH=./data
 # CONFIG_PATH=./config
@@ -198,6 +203,8 @@ def cmd_status():
         "sonarr": {"name": "Sonarr", "port": 8989, "critical": False},
         "prowlarr": {"name": "Prowlarr", "port": 9696, "critical": False},
         "bazarr": {"name": "Bazarr", "port": 6767, "critical": False},
+        "flaresolverr": {"name": "FlareSolverr", "port": None, "critical": False},
+        "decluttarr": {"name": "Decluttarr", "port": None, "critical": False},
     }
 
     # Get local IP
