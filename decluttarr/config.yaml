@@ -1,0 +1,33 @@
+# Decluttarr Configuration
+# Automatically removes stalled/slow/failed downloads
+# Set test_run to false after verifying it works
+
+logging:
+  level: INFO
+
+general:
+  test_run: true
+  check_interval: 60
+
+features:
+  remove_stalled: true
+  remove_stalled_max_strikes: 3
+  remove_failed_downloads: true
+  remove_slow: true
+  remove_slow_min_speed_kbps: 100
+
+radarr:
+  enabled: true
+  url: http://fleet-radarr:7878
+  api_key: ${RADARR_API_KEY}
+
+sonarr:
+  enabled: true
+  url: http://fleet-sonarr:8989
+  api_key: ${SONARR_API_KEY}
+
+qbittorrent:
+  enabled: true
+  url: http://fleet-gluetun:8080
+  username: admin
+  password: ${QBITTORRENT_PASSWORD}
