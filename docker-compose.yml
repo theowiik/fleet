@@ -155,8 +155,24 @@ services:
   decluttarr:
     image: ghcr.io/manimatter/decluttarr:latest
     container_name: fleet-decluttarr
-    volumes:
-      - ./decluttarr:/config
     environment:
       TZ: ${TZ:-UTC}
+      LOG_LEVEL: INFO
+      TEST_RUN: "True"
+      TIMER: 10
+      MAX_STRIKES: 3
+      REMOVE_STALLED: "True"
+      REMOVE_FAILED_DOWNLOADS: "True"
+      REMOVE_SLOW: |
+        min_speed: 100
+      RADARR: |
+        - base_url: "http://fleet-radarr:7878"
+          api_key: "${RADARR_API_KEY}"
+      SONARR: |
+        - base_url: "http://fleet-sonarr:8989"
+          api_key: "${SONARR_API_KEY}"
+      QBITTORRENT: |
+        - base_url: "http://fleet-gluetun:8080"
+          username: "admin"
+          password: "${QBITTORRENT_PASSWORD}"
     restart: unless-stopped

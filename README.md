@@ -139,7 +139,7 @@ Applies recommended quality profiles from TRaSH Guides.
 Automatically removes stuck/failed downloads. Runs continuously in the background.
 
 1. Check it sees your queues: `python manage.py logs decluttarr`
-2. Once verified, edit `decluttarr/config.yaml` and set `test_run: false`
+2. Once verified, edit `docker-compose.yml` and set `TEST_RUN: "False"`
 
 ## Disclaimer
 
