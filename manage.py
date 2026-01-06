@@ -403,6 +403,14 @@ def cmd_vpn():
     return 0
 
 
+def cmd_sync():
+    print("\n⚡ SYNCING QUALITY PROFILES\n")
+    result = subprocess.run(["docker", "compose", "run", "--rm", "recyclarr", "sync"])
+    if result.returncode == 0:
+        print("\n✓ Profiles synced")
+    return result.returncode
+
+
 def cmd_clean():
     print("Removing containers...")
     compose("down")
@@ -467,15 +475,23 @@ def show_help():
 
 Usage: python manage.py <command>
 
+Getting Started:
   setup     Create .env and directories
+
+Services:
   start     Start all services
   stop      Stop all services
   restart   Restart services
-  status    Show containers
+  status    Show service status
   logs      View logs (or: logs <service>)
+
+Tools:
   vpn       Check VPN is working
+  sync      Sync quality profiles (Recyclarr)
+
+Maintenance:
   clean     Remove containers (keeps data)
-  reset     Full reset
+  reset     Full reset (deletes configs)
 """)
 
 
@@ -487,6 +503,7 @@ COMMANDS = {
     "status": cmd_status,
     "logs": cmd_logs,
     "vpn": cmd_vpn,
+    "sync": cmd_sync,
     "clean": cmd_clean,
     "reset": cmd_reset,
 }

@@ -131,7 +131,7 @@ Automatic subtitles. Connect to Radarr/Sonarr the same way.
 Applies recommended quality profiles from TRaSH Guides.
 
 1. Copy API keys from Radarr/Sonarr (Settings → General) into `.env`
-2. Run `docker compose run --rm recyclarr sync`
+2. Run `python manage.py sync`
 3. In Radarr/Sonarr: Settings → Indexers → set **Minimum Seeders** to `5`
 
 ### 8. Decluttarr
