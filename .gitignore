@@ -4,6 +4,8 @@
 # Fleet - runtime data (media, torrents, service configs)
 data/
 config/
+recyclarr/cache/
+recyclarr/settings.yml
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python

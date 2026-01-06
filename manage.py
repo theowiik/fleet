@@ -14,6 +14,11 @@ ENV_TEMPLATE = """# Fleet - Edit VPN settings, then: python manage.py start
 WIREGUARD_PRIVATE_KEY=CHANGE_ME
 WIREGUARD_ADDRESSES=CHANGE_ME
 
+# For Recyclarr/Decluttarr (get from Radarr/Sonarr Settings → General)
+# RADARR_API_KEY=
+# SONARR_API_KEY=
+# QBITTORRENT_PASSWORD=
+
 # Optional
 # DATA_PATH=./data
 # CONFIG_PATH=./config
@@ -198,6 +203,8 @@ def cmd_status():
         "sonarr": {"name": "Sonarr", "port": 8989, "critical": False},
         "prowlarr": {"name": "Prowlarr", "port": 9696, "critical": False},
         "bazarr": {"name": "Bazarr", "port": 6767, "critical": False},
+        "flaresolverr": {"name": "FlareSolverr", "port": None, "critical": False},
+        "decluttarr": {"name": "Decluttarr", "port": None, "critical": False},
     }
 
     # Get local IP
@@ -396,6 +403,14 @@ def cmd_vpn():
     return 0
 
 
+def cmd_sync():
+    print("\n⚡ SYNCING QUALITY PROFILES\n")
+    result = subprocess.run(["docker", "compose", "run", "--rm", "recyclarr", "sync"])
+    if result.returncode == 0:
+        print("\n✓ Profiles synced")
+    return result.returncode
+
+
 def cmd_clean():
     print("Removing containers...")
     compose("down")
@@ -460,15 +475,23 @@ def show_help():
 
 Usage: python manage.py <command>
 
+Getting Started:
   setup     Create .env and directories
+
+Services:
   start     Start all services
   stop      Stop all services
   restart   Restart services
-  status    Show containers
+  status    Show service status
   logs      View logs (or: logs <service>)
+
+Tools:
   vpn       Check VPN is working
+  sync      Sync quality profiles (Recyclarr)
+
+Maintenance:
   clean     Remove containers (keeps data)
-  reset     Full reset
+  reset     Full reset (deletes configs)
 """)
 
 
@@ -480,6 +503,7 @@ COMMANDS = {
     "status": cmd_status,
     "logs": cmd_logs,
     "vpn": cmd_vpn,
+    "sync": cmd_sync,
     "clean": cmd_clean,
     "reset": cmd_reset,
 }
