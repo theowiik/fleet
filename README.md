@@ -52,18 +52,18 @@ Address = 10.x.x.x/32    ← WIREGUARD_ADDRESSES
 
 ## Services
 
-| Service      | Port  | Purpose                           |
-| ------------ | ----- | --------------------------------- |
-| Jellyfin     | :8096 | Watch your media                  |
-| Jellyseerr   | :5055 | Request movies/shows              |
-| Radarr       | :7878 | Movie automation                  |
-| Sonarr       | :8989 | TV automation                     |
-| Prowlarr     | :9696 | Indexer management                |
-| FlareSolverr | :8191 | Cloudflare bypass (VPN protected) |
-| Bazarr       | :6767 | Subtitle automation               |
-| qBittorrent  | :8080 | Downloads (VPN protected)         |
+| Service      | Port  | Purpose                              |
+| ------------ | ----- | ------------------------------------ |
+| Jellyfin     | :8096 | Watch your media                     |
+| Jellyseerr   | :5055 | Request movies/shows                 |
+| Radarr       | :7878 | Movie automation                     |
+| Sonarr       | :8989 | TV automation                        |
+| Prowlarr     | :9696 | Indexer management                   |
+| FlareSolverr | :8191 | Cloudflare bypass (VPN protected)    |
+| Bazarr       | :6767 | Subtitle automation                  |
+| qBittorrent  | :8080 | Downloads (VPN protected)            |
 | Recyclarr    | —     | Applies recommended quality settings |
-| Decluttarr   | —     | Auto-removes stuck downloads      |
+| Decluttarr   | —     | Auto-removes stuck downloads         |
 
 ## First-Time Service Setup
 
