@@ -155,10 +155,15 @@ services:
   decluttarr:
     image: ghcr.io/manimatter/decluttarr:latest
     container_name: fleet-decluttarr
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    volumes:
+      - ${DATA_PATH:-./data}:/data
     environment:
       TZ: ${TZ:-UTC}
       LOG_LEVEL: INFO
-      TEST_RUN: "True"
+      TEST_RUN: "False"
       TIMER: 10
       MAX_STRIKES: 3
       REMOVE_STALLED: "True"
